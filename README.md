@@ -13,13 +13,19 @@ echo "Пошук файлів більше $file_size у каталозі $dir_p
 find "$dir_path" -type f -size +"$file_size" -print0 | while IFS= read -r -d '' file; do 
     echo "Знайдено файл: $file" 
      
-    read -p "Видалити цей файл? (y/n): " confirm 
-    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then 
-        rm "$file" 
-        echo "Файл видалено: $file" 
-    else 
-        echo "Файл залишено: $file" 
-    fi 
+    while true; do
+        read -p "Видалити цей файл? (y/n): " confirm 
+        if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then 
+            rm "$file" 
+            echo "Файл видалено: $file" 
+            break
+        elif [[ "$confirm" == "n" || "$confirm" == "N" ]]; then 
+            echo "Файл залишено: $file" 
+            break
+        else
+            echo "Невірний вибір. Введіть 'y' (так) або 'n' (ні)."
+        fi
+    done
 done 
  
 echo "Операція завершена."
